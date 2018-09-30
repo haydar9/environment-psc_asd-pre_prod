@@ -7,16 +7,20 @@ pipeline {
         sh 'echo "build successful."'
       }
     }
-    parallel(
-      'Unit Tests': {
-        sh 'echo "Running unit tests..."'
-        sh 'echo "Unit tests successfully run."'
-      },
-      'Integration Tests': {
-        sh 'echo "Running integration tests..."'
-        sh 'echo "Integration tests successfully run."'
+    stage('Build') {
+      steps {
+        parallel(
+          'Unit Tests': {
+            sh 'echo "Running unit tests..."'
+            sh 'echo "Unit tests successfully run."'
+          },
+          'Integration Tests': {
+            sh 'echo "Running integration tests..."'
+            sh 'echo "Integration tests successfully run."'
+          }
+        )
       }
-    )
+    }
     stage('Publish SNAPSHOT to Artifact') {
       when {
         branch 'dev'
