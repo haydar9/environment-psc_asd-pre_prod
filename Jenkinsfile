@@ -2,7 +2,9 @@ pipeline {
   options {
     disableConcurrentBuilds()
   }
-  agent any
+  agent {
+    label "jenkins-jenkins-slave"
+  }
   stages {
     stage('Stage 1') {
       steps {
