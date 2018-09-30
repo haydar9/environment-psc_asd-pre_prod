@@ -7,35 +7,16 @@ pipeline {
         sh 'echo "build successful."'
       }
     }
-    stage('Unit Tests') {
-      steps {
+    parallel(
+      'Unit Tests': {
         sh 'echo "Running unit tests..."'
         sh 'echo "Unit tests successfully run."'
-      }
-    }
-    stage('Integration Tests') {
-      steps {
+      },
+      'Integration Tests': {
         sh 'echo "Running integration tests..."'
         sh 'echo "Integration tests successfully run."'
       }
-    }
-    stage('Publish to Artifact') {
-      when {
-        branch 'master'
-        branch 'release/*'
-      }
-      input {
-        message 'Should we continue?'
-        id 'Yes, we should.'
-        submitter 'alice,bob,admin'
-        parameters {
-          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-        }
-      }
-      steps {
-        sh 'echo "Publishing to artifact"'
-      }
-    }
+    )
     stage('Publish SNAPSHOT to Artifact') {
       when {
         branch 'dev'
