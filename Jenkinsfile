@@ -4,21 +4,26 @@ pipeline {
     stage('Build') {
       steps {
         sh 'echo "building..."'
+        sleep 1
         sh 'echo "build successful."'
       }
     }
     stage('Test') {
-      steps {
-        parallel(
-          'Unit Tests': {
+      parallel {
+        stage('Unit Tests') {
+          steps {
             sh 'echo "Running unit tests..."'
+            sleep 1
             sh 'echo "Unit tests successfully run."'
-          },
-          'Integration Tests': {
+          }
+        }
+        stage('Integration Tests') {
+          steps {
             sh 'echo "Running integration tests..."'
             sh 'echo "Integration tests successfully run."'
+            sleep 1
           }
-        )
+        }
       }
     }
     stage('Publish SNAPSHOT to Artifact') {
@@ -27,6 +32,7 @@ pipeline {
       }
       steps {
         sh 'echo "Publishing to artifact"'
+        sleep 1
       }
     }
     stage('Publish RC to Artifact') {
@@ -35,6 +41,7 @@ pipeline {
       }
       steps {
         sh 'echo "Publishing to artifact"'
+        sleep 1
       }
     }
     stage('Publish RELEASE to Artifact') {
@@ -43,6 +50,7 @@ pipeline {
       }
       steps {
         sh 'echo "Publishing to artifact"'
+        sleep 1
       }
     }
   }
