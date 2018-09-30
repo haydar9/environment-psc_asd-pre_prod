@@ -5,7 +5,6 @@ pipeline {
       steps {
         sh 'echo "building..."'
         sh 'echo "build successful."'
-        stash(name: 'war-file', includes: 'app.war')
       }
     }
     stage('Unit Tests') {
