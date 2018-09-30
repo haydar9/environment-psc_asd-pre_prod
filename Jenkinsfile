@@ -7,7 +7,7 @@ pipeline {
         sh 'echo "build successful."'
       }
     }
-    stage('Build') {
+    stage('Test') {
       steps {
         parallel(
           'Unit Tests': {
