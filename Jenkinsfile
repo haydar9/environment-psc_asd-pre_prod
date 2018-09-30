@@ -3,7 +3,9 @@ pipeline {
     disableConcurrentBuilds()
   }
   agent {
-    label "jenkins-jenkins-slave"
+    kubernetes {
+      label "jenkins-jenkins-slave"
+    }
   }
   stages {
     stage('Stage 1') {
