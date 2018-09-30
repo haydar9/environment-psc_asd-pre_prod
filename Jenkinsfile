@@ -8,17 +8,6 @@ pipeline {
       }
     }
     stage('Unit Tests') {
-      when {
-        branch 'master'
-      }
-      input {
-        message 'Should we continue?'
-        id 'Yes, we should.'
-        submitter 'alice,bob'
-        parameters {
-          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-        }
-      }
       steps {
         sh 'echo "Running unit tests..."'
         sh 'echo "Unit tests successfully run."'
@@ -31,6 +20,42 @@ pipeline {
       }
     }
     stage('Publish to Artifact') {
+      when {
+        branch 'master'
+        branch 'release/*'
+      }
+      input {
+        message 'Should we continue?'
+        id 'Yes, we should.'
+        submitter 'alice,bob,admin'
+        parameters {
+          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        }
+      }
+      steps {
+        sh 'echo "Publishing to artifact"'
+      }
+    }
+    stage('Publish SNAPSHOT to Artifact') {
+      when {
+        branch 'dev'
+      }
+      steps {
+        sh 'echo "Publishing to artifact"'
+      }
+    }
+    stage('Publish RC to Artifact') {
+      when {
+        branch 'release/*'
+      }
+      steps {
+        sh 'echo "Publishing to artifact"'
+      }
+    }
+    stage('Publish RELEASE to Artifact') {
+      when {
+        branch 'master'
+      }
       steps {
         sh 'echo "Publishing to artifact"'
       }
