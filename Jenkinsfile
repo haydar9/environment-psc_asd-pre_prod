@@ -1,29 +1,43 @@
 pipeline {
-  options {
-    disableConcurrentBuilds()
-  }
   agent any
   stages {
-    stage('Stage 1') {
+    stage('Build') {
       steps {
-        sh 'echo "Stage 1"'
+        sh 'echo "building..."'
+        sh 'echo "build successful."'
+        stash(name: 'war-file', includes: 'app.war')
       }
     }
-    stage('Stage 2') {
-      input {
-message "Should we continue?"
-ok "Yes, we should."
-submitter "alice,bob"
-parameters {
-string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-}
-}
+    stage('Unit Tests') {
       when {
         branch 'master'
       }
+      input {
+        message 'Should we continue?'
+        id 'Yes, we should.'
+        submitter 'alice,bob'
+        parameters {
+          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+        }
+      }
       steps {
-        sh 'echo "Stage 2'
+        sh 'echo "Running unit tests..."'
+        sh 'echo "Unit tests successfully run."'
       }
     }
+    stage('Integration Tests') {
+      steps {
+        sh 'echo "Running integration tests..."'
+        sh 'echo "Integration tests successfully run."'
+      }
+    }
+    stage('Publish to Artifact') {
+      steps {
+        sh 'echo "Publishing to artifact"'
+      }
+    }
+  }
+  options {
+    disableConcurrentBuilds()
   }
 }
